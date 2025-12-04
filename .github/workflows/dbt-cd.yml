@@ -22,8 +22,8 @@ jobs:
           pip install dbt-snowflake
 
       - name: Run dbt debug
-        run: dbt debug --profiles-dir ./airbnb  --project-dir ./airbnb --target prod
+        run: dbt debug --profiles-dir ./dbt_airbnb  --project-dir ./dbt_airbnb --target prod
 
       - name: Run dbt tests
-        run: dbt test --profiles-dir ./airbnb  --project-dir ./airbnb --target prod || true
+        run: dbt test --profiles-dir ./dbt_airbnb  --project-dir ./dbt_airbnb --target prod || true
 

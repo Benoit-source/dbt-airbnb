@@ -32,8 +32,8 @@ jobs:
 
       - name: Create profiles.yml
         run: |
-          mkdir -p ./dbt-airbnb
-          cat <<EOF > ./dbt-airbnb/profiles.yml
+          mkdir -p ./dbt_airbnb
+          cat <<EOF > ./dbt_airbnb/profiles.yml
             airbnb:
               target: ci
               outputs:
@@ -49,16 +49,16 @@ jobs:
           EOF
 
       - name: Install dependencies
-        run: dbt deps --project-dir ./dbt-airbnb --profiles-dir ./dbt-airbnb --target ci
+        run: dbt deps --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --target ci
 
       - name: Create temporary schema (via dbt macro)
         run: |
-          dbt run-operation create_schema --project-dir ./dbt-airbnb --profiles-dir ./dbt-airbnb --target ci --args "{\"relation\": \"${{ steps.schema-temp.outputs.schema_name }}\"}"
+          dbt run-operation create_schema --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --target ci --args "{\"relation\": \"${{ steps.schema-temp.outputs.schema_name }}\"}"
 
       - name: Run dbt build on temp schema
-        run: dbt build --project-dir ./dbt-airbnb --profiles-dir ./dbt-airbnb --target ci --full-refresh
+        run: dbt build --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --target ci --full-refresh
 
       - name: Drop temporary schema (via dbt macro)
         if: always()
         run: |
-            dbt run-operation drop_schema_like --project-dir ./dbt-airbnb --profiles-dir ./dbt-airbnb --args "{\"prefix\": \"${{ steps.schema-temp.outputs.schema_name }}\"}"
+            dbt run-operation drop_schema_like --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --args "{\"prefix\": \"${{ steps.schema-temp.outputs.schema_name }}\"}"

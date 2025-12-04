@@ -17,9 +17,9 @@ jobs:
         run: |
           git fetch origin cd-artifacts:cd-artifacts || git checkout --orphan cd-artifacts
           git checkout cd-artifacts || git checkout -b cd-artifacts
-          mkdir -p ./dbt-airbnb/prev_manifest
+          mkdir -p ./dbt_airbnb/prev_manifest
           if [ -f manifest.json ]; then
-            cp manifest.json ./dbt-airbnb/prev_manifest/manifest.json
+            cp manifest.json ./dbt_airbnb/prev_manifest/manifest.json
           fi
 
       - name: Set up Python
@@ -34,7 +34,7 @@ jobs:
       - name: Check manifest
         id: manifest-check
         run: |
-          if [ -f "./dbt-airbnb/prev_manifest/manifest.json" ]; then
+          if [ -f "./dbt_airbnb/prev_manifest/manifest.json" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -42,28 +42,28 @@ jobs:
 
       - name: Build only changed models - Deploy to PROD
         if: steps.manifest-check.outputs.exists == 'true' && github.ref == 'refs/heads/main'
-        run: dbt build --profiles-dir ./dbt-airbnb --project-dir ./dbt-airbnb --target prod --select state:modified+ --state ./prev_manifest
+        run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod --select state:modified+ --state ./prev_manifest
 
       - name: Build full project (no manifest available) - Deploy to PROD
         if: steps.manifest-check.outputs.exists == 'false' && github.ref == 'refs/heads/main'
-        run: dbt build --profiles-dir ./dbt-airbnb --project-dir ./dbt-airbnb --target prod --full-refresh
+        run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod --full-refresh
 
       - name: Save new manifest
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          cp ./dbt-airbnb/target/manifest.json ./manifest.json
+          cp ./dbt_airbnb/target/manifest.json ./manifest.json
           git add manifest.json
           git commit -m "Update dbt manifest for run ${{ github.run_id }}" || echo "No changes to commit"
           git push origin cd-artifacts
 
       - name: Generate dbt docs
-        run: dbt docs generate --profiles-dir ./dbt-airbnb --project-dir ./dbt-airbnb --target prod
+        run: dbt docs generate --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod
 
       - name: Deploy docs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dbt-airbnb/target
+          publish_dir: ./dbt_airbnb/target
           publish_branch: gh-pages
 

@@ -17,9 +17,9 @@ jobs:
         run: |
           git fetch origin ci-artifacts:ci-artifacts || git checkout --orphan ci-artifacts
           git checkout ci-artifacts || git checkout -b ci-artifacts
-          mkdir -p ./dbt-airbnb/prev_manifest
+          mkdir -p ./dbt_airbnb/prev_manifest
           if [ -f manifest.json ]; then
-            cp manifest.json ./dbt-airbnb/prev_manifest/manifest.json
+            cp manifest.json ./dbt_airbnb/prev_manifest/manifest.json
           fi
 
       - name: Set up Python
@@ -34,7 +34,7 @@ jobs:
       - name: Check manifest
         id: manifest-check
         run: |
-          if [ -f "./dbt-airbnb/prev_manifest/manifest.json" ]; then
+          if [ -f "./dbt_airbnb/prev_manifest/manifest.json" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -42,17 +42,17 @@ jobs:
 
       - name: Build only changed models - Deploy to DEV
         if: steps.manifest-check.outputs.exists == 'true' && github.ref == 'refs/heads/développement'
-        run: dbt build --profiles-dir ./dbt-airbnb --project-dir ./dbt-airbnb --target dev --select state:modified+ --state ./prev_manifest
+        run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target dev --select state:modified+ --state ./prev_manifest
 
       - name: Build full project (no manifest available) - Deploy to DEV
         if: steps.manifest-check.outputs.exists == 'false' && github.ref == 'refs/heads/développement'
-        run: dbt build --profiles-dir ./dbt-airbnb --project-dir ./dbt-airbnb --target dev --full-refresh
+        run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target dev --full-refresh
 
       - name: Save new manifest
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          cp ./dbt-airbnb/target/manifest.json ./manifest.json
+          cp ./dbt_airbnb/target/manifest.json ./manifest.json
           git add manifest.json
           git commit -m "Update dbt manifest for run ${{ github.run_id }}" || echo "No changes to commit"
           git push origin ci-artifacts
