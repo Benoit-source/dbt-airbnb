@@ -41,11 +41,11 @@ jobs:
           fi
 
       - name: Build only changed models - Deploy to DEV
-        if: steps.manifest-check.outputs.exists == 'true' && github.ref == 'refs/heads/développement'
+        if: steps.manifest-check.outputs.exists == 'true' && github.ref == 'refs/heads/develop'
         run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target dev --select state:modified+ --state ./prev_manifest
 
       - name: Build full project (no manifest available) - Deploy to DEV
-        if: steps.manifest-check.outputs.exists == 'false' && github.ref == 'refs/heads/développement'
+        if: steps.manifest-check.outputs.exists == 'false' && github.ref == 'refs/heads/develop'
         run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target dev --full-refresh
 
       - name: Save new manifest
