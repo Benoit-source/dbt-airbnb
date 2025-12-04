@@ -56,6 +56,16 @@ jobs:
         if: steps.manifest-check.outputs.exists == 'false' && github.ref == 'refs/heads/main'
         run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod --full-refresh
 
+      - name: Generate dbt docs
+        run: dbt docs generate --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod
+
+      - name: Deploy docs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dbt_airbnb/target
+          publish_branch: gh-pages
+
       - name: Save new manifest
         run: |
           git fetch origin cd-artifacts || true
@@ -71,13 +81,4 @@ jobs:
 
           git push origin cd-artifacts --force
 
-      - name: Generate dbt docs
-        run: dbt docs generate --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod
-
-      - name: Deploy docs to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dbt_airbnb/target
-          publish_branch: gh-pages
 
