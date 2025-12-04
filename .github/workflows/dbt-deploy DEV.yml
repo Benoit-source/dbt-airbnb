@@ -18,15 +18,17 @@ jobs:
       - name: Fetch ci-artifacts
         run: |
           git fetch origin ci-artifacts:ci-artifacts || git checkout --orphan ci-artifacts
+          git checkout ci-artifacts || git checkout -b ci-artifacts
+          
           mkdir -p ./dbt_airbnb/prev_manifest
           if [ -f manifest.json ]; then
             cp manifest.json ./dbt_airbnb/prev_manifest/manifest.json
+            echo "Manifest copied to prev_manifest"
+          else
+            echo "No manifest found"
           fi
-
-      - name: Prepare code for dbt
-        run: |
-          git checkout -b ci-temp
-          git merge develop --allow-unrelated-histories -m "Merge develop into ci-temp for CI"
+          
+          git checkout develop
 
       - name: Set up Python
         uses: actions/setup-python@v5
