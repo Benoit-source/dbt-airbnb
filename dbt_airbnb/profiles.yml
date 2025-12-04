@@ -10,7 +10,6 @@ dbt_airbnb:
       type: snowflake
       user: benoit
       warehouse: COMPUTE_WH
-  target: feature
     dev:
       account: zerzljf-agb83711
       database: AIRBNB_BI_DEV
@@ -31,3 +30,4 @@ dbt_airbnb:
       type: snowflake
       user: benoit
       warehouse: COMPUTE_WH
+  target: feature
