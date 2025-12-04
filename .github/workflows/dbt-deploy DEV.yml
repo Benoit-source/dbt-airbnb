@@ -56,9 +56,15 @@ jobs:
 
       - name: Save new manifest
         run: |
+          git fetch origin ci-artifacts || true
+          git checkout -B ci-artifacts origin/ci-artifacts || git checkout -b ci-artifacts
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
           cp ./dbt_airbnb/target/manifest.json ./manifest.json
           git add manifest.json
+
           git commit -m "Update dbt manifest for run ${{ github.run_id }}" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Benoit-source/dbt-airbnb.git ci-temp:ci-artifacts
+
+          git push origin ci-artifacts --force
