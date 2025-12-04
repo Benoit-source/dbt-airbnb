@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: AIRBNB_BORDEAUX
+    database: "{{ target.database }}" 
+    schema: RAW_AIRBNB_BORDEAUX  
+    tables:
+      - name: DBO_LISTING
+      - name: DBO_REVIEW
+  - name: AIRBNB_LYON
+    database: "{{ target.database }}"  
+    schema: RAW_AIRBNB_LYON 
+    tables:
+      - name: AIRBNB_LISTING
+      - name: AIRBNB_REVIEW
+  - name: AIRBNB_PARIS
+    database: "{{ target.database }}" 
+    schema: RAW_AIRBNB_PARIS
+    tables:
+      - name: AIRBNB_LISTING
+      - name: AIRBNB_REVIEW
+  - name: AIRBNB_PAYS_BASQUE
+    database: "{{ target.database }}" 
+    schema: RAW_AIRBNB_PAYS_BASQUE
+    tables:
+      - name: AIRBNB_LISTING
+      - name: AIRBNB_REVIEW

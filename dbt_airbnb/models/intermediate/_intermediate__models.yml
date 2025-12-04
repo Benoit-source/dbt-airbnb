@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: int_f_location
+    description: |
+      A unified set of all airbnb
+
+      **Granularité:** Une ligne par airbnb.
+    
+    columns:
+      - name: id
+        tests:
+          - not_null
+          - unique
