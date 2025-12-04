@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir -p ./dbt_airbnb
           cat <<EOF > ./dbt_airbnb/profiles.yml
-            airbnb:
+            dbt_airbnb:
               target: ci
               outputs:
                 ci:
