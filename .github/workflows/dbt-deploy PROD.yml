@@ -1,0 +1,69 @@
+name: dbt Deploy PROD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dbt:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch manifest branch
+        run: |
+          git fetch origin cd-artifacts:cd-artifacts || git checkout --orphan cd-artifacts
+          git checkout cd-artifacts || git checkout -b cd-artifacts
+          mkdir -p ./dbt-airbnb/prev_manifest
+          if [ -f manifest.json ]; then
+            cp manifest.json ./dbt-airbnb/prev_manifest/manifest.json
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dbt
+        run: |
+          pip install dbt-snowflake
+
+      - name: Check manifest
+        id: manifest-check
+        run: |
+          if [ -f "./dbt-airbnb/prev_manifest/manifest.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build only changed models - Deploy to PROD
+        if: steps.manifest-check.outputs.exists == 'true' && github.ref == 'refs/heads/main'
+        run: dbt build --profiles-dir ./dbt-airbnb --project-dir ./dbt-airbnb --target prod --select state:modified+ --state ./prev_manifest
+
+      - name: Build full project (no manifest available) - Deploy to PROD
+        if: steps.manifest-check.outputs.exists == 'false' && github.ref == 'refs/heads/main'
+        run: dbt build --profiles-dir ./dbt-airbnb --project-dir ./dbt-airbnb --target prod --full-refresh
+
+      - name: Save new manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          cp ./dbt-airbnb/target/manifest.json ./manifest.json
+          git add manifest.json
+          git commit -m "Update dbt manifest for run ${{ github.run_id }}" || echo "No changes to commit"
+          git push origin cd-artifacts
+
+      - name: Generate dbt docs
+        run: dbt docs generate --profiles-dir ./dbt-airbnb --project-dir ./dbt-airbnb --target prod
+
+      - name: Deploy docs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dbt-airbnb/target
+          publish_branch: gh-pages
+

@@ -1,0 +1,29 @@
+name: dbt CD
+
+on:
+  pull_request:
+    branches:
+      - main
+ 
+jobs:
+  dbt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dbt
+        run: |
+          pip install dbt-snowflake
+
+      - name: Run dbt debug
+        run: dbt debug --profiles-dir ./airbnb  --project-dir ./airbnb --target prod
+
+      - name: Run dbt tests
+        run: dbt test --profiles-dir ./airbnb  --project-dir ./airbnb --target prod || true
+

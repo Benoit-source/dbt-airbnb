@@ -1,0 +1,64 @@
+name: dbt CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    env:
+      DBT_PROFILES_DIR: .
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dbt-snowflake
+        run: pip install dbt-snowflake
+
+      - name: Génération du schéma temporaire
+        id: schema-temp
+        run: |
+          SCHEMA_NAME="CI_${{ github.run_id }}_${{ github.ref_name }}"
+          echo "schema_name=${SCHEMA_NAME//[^A-Za-z0-9_]/_}" >> $GITHUB_OUTPUT
+
+      - name: Create profiles.yml
+        run: |
+          mkdir -p ./dbt-airbnb
+          cat <<EOF > ./dbt-airbnb/profiles.yml
+            airbnb:
+              target: ci
+              outputs:
+                ci:
+                  type: snowflake
+                  account: "${{ secrets.SNOWFLAKE_ACCOUNT }}"
+                  user: "${{ secrets.SNOWFLAKE_USER }}"
+                  password: "${{ secrets.SNOWFLAKE_PASSWORD }}"
+                  role: "${{ secrets.SNOWFLAKE_ROLE }}"
+                  warehouse: "${{ secrets.SNOWFLAKE_WAREHOUSE }}"
+                  database: "${{ secrets.SNOWFLAKE_DATABASE_DEV }}"
+                  schema: "${{ steps.schema-temp.outputs.schema_name }}"
+          EOF
+
+      - name: Install dependencies
+        run: dbt deps --project-dir ./dbt-airbnb --profiles-dir ./dbt-airbnb --target ci
+
+      - name: Create temporary schema (via dbt macro)
+        run: |
+          dbt run-operation create_schema --project-dir ./dbt-airbnb --profiles-dir ./dbt-airbnb --target ci --args "{\"relation\": \"${{ steps.schema-temp.outputs.schema_name }}\"}"
+
+      - name: Run dbt build on temp schema
+        run: dbt build --project-dir ./dbt-airbnb --profiles-dir ./dbt-airbnb --target ci --full-refresh
+
+      - name: Drop temporary schema (via dbt macro)
+        if: always()
+        run: |
+            dbt run-operation drop_schema_like --project-dir ./dbt-airbnb --profiles-dir ./dbt-airbnb --args "{\"prefix\": \"${{ steps.schema-temp.outputs.schema_name }}\"}"
