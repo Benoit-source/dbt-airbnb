@@ -18,15 +18,17 @@ jobs:
       - name: Fetch cd-artifacts
         run: |
           git fetch origin cd-artifacts:cd-artifacts || git checkout --orphan cd-artifacts
+          git checkout cd-artifacts || git checkout -b cd-artifacts
+          
           mkdir -p ./dbt_airbnb/prev_manifest
           if [ -f manifest.json ]; then
             cp manifest.json ./dbt_airbnb/prev_manifest/manifest.json
+            echo "Manifest copied to prev_manifest"
+          else
+            echo "No manifest found"
           fi
-
-      - name: Prepare code for dbt
-        run: |
-          git checkout -b cd-temp
-          git merge main --allow-unrelated-histories -m "Merge develop into cd-temp for CD"
+          
+          git checkout main
 
       - name: Set up Python
         uses: actions/setup-python@v4
