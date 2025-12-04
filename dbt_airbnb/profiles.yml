@@ -1,0 +1,33 @@
+dbt_airbnb:
+  outputs:
+    feature:
+      account: zerzljf-agb83711
+      database: AIRBNB_BI_FEATURE
+      password: 'K?Ix,61Y~K1;O:'
+      role: accountadmin
+      schema: BI
+      threads: 4
+      type: snowflake
+      user: benoit
+      warehouse: COMPUTE_WH
+  target: feature
+    dev:
+      account: zerzljf-agb83711
+      database: AIRBNB_BI_DEV
+      password: 'K?Ix,61Y~K1;O:'
+      role: accountadmin
+      schema: BI
+      threads: 4
+      type: snowflake
+      user: benoit
+      warehouse: COMPUTE_WH
+    prod:
+      account: zerzljf-agb83711
+      database: AIRBNB_BI
+      password: 'K?Ix,61Y~K1;O:'
+      role: accountadmin
+      schema: BI
+      threads: 4
+      type: snowflake
+      user: benoit
+      warehouse: COMPUTE_WH
