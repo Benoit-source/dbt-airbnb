@@ -12,15 +12,21 @@ jobs:
 
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          ref: develop
 
-      - name: Fetch manifest branch
+      - name: Fetch ci-artifacts
         run: |
           git fetch origin ci-artifacts:ci-artifacts || git checkout --orphan ci-artifacts
-          git checkout ci-artifacts || git checkout -b ci-artifacts
           mkdir -p ./dbt_airbnb/prev_manifest
           if [ -f manifest.json ]; then
             cp manifest.json ./dbt_airbnb/prev_manifest/manifest.json
           fi
+
+      - name: Prepare code for dbt
+        run: |
+          git checkout -b ci-temp
+          git merge develop --allow-unrelated-histories -m "Merge develop into ci-temp for CI"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,7 +37,7 @@ jobs:
         run: |
           pip install dbt-snowflake
 
-      - name: Check manifest
+      - name: Check previous manifest
         id: manifest-check
         run: |
           if [ -f "./dbt_airbnb/prev_manifest/manifest.json" ]; then
@@ -55,4 +61,4 @@ jobs:
           cp ./dbt_airbnb/target/manifest.json ./manifest.json
           git add manifest.json
           git commit -m "Update dbt manifest for run ${{ github.run_id }}" || echo "No changes to commit"
-          git push origin ci-artifacts
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Benoit-source/dbt-airbnb.git ci-temp:ci-artifacts
