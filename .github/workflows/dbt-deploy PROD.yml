@@ -12,15 +12,21 @@ jobs:
 
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          ref: main
 
-      - name: Fetch manifest branch
+      - name: Fetch cd-artifacts
         run: |
           git fetch origin cd-artifacts:cd-artifacts || git checkout --orphan cd-artifacts
-          git checkout cd-artifacts || git checkout -b cd-artifacts
           mkdir -p ./dbt_airbnb/prev_manifest
           if [ -f manifest.json ]; then
             cp manifest.json ./dbt_airbnb/prev_manifest/manifest.json
           fi
+
+      - name: Prepare code for dbt
+        run: |
+          git checkout -b cd-temp
+          git merge main --allow-unrelated-histories -m "Merge develop into cd-temp for CD"
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -31,7 +37,7 @@ jobs:
         run: |
           pip install dbt-snowflake
 
-      - name: Check manifest
+      - name: Check previous manifest
         id: manifest-check
         run: |
           if [ -f "./dbt_airbnb/prev_manifest/manifest.json" ]; then
@@ -55,7 +61,7 @@ jobs:
           cp ./dbt_airbnb/target/manifest.json ./manifest.json
           git add manifest.json
           git commit -m "Update dbt manifest for run ${{ github.run_id }}" || echo "No changes to commit"
-          git push origin cd-artifacts
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Benoit-source/dbt-airbnb.git cd-temp:cd-artifacts
 
       - name: Generate dbt docs
         run: dbt docs generate --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod
