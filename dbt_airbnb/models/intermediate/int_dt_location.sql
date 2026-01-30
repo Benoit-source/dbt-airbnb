@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'dynamic_table',
-    warehouse = 'COMPUTE_WH',
+    snowflake_warehouse = 'COMPUTE_WH',
     target_lag = '24 hour'
 ) }}
 
