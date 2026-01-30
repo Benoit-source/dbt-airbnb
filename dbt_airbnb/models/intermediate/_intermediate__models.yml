@@ -13,7 +13,7 @@ models:
           - not_null
           - unique
 
-  - name: int_f_dt_location
+  - name: int_dt_location
     description: Test de table dynamic avec DBT et DMF
     columns:
       - name: id
