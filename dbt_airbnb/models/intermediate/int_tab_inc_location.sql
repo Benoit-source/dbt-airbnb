@@ -39,5 +39,5 @@ Where FG_DER_VER = 1)
 
 select * from loc
 {% if is_incremental() %}
-  where DT_EVT > (select max(DT_EDT) from {{ this }})
+  where DT_EVT > (select max(DT_EVT) from {{ this }})
 {% endif %}
