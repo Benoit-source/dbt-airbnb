@@ -1,7 +1,8 @@
 {{ config(
     materialized='incremental',
     unique_key='ID',
-    incremental_strategy='merge'
+    incremental_strategy='merge',
+    transient=false
 ) }}
 
 with max_evt as (
