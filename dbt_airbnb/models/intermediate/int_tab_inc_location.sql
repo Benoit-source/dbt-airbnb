@@ -1,8 +1,8 @@
 {{ config(
-    materialized = 'dynamic_table',
-    snowflake_warehouse = 'COMPUTE_WH',
-    target_lag = '24 hour'
+    materialized='incremental',
+    unique_key='ID'
 ) }}
+
 
 with loc as (
 Select ID, 
@@ -37,3 +37,6 @@ From {{ ref('stg_airbnb__listing') }}
 Where FG_DER_VER = 1)
 
 select * from loc
+{% if is_incremental() %}
+  where DT_EVT > (select max(DT_EDT) from {{ this }})
+{% endif %}

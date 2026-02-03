@@ -1,8 +1,5 @@
-{{ config(
-    materialized = 'dynamic_table',
-    snowflake_warehouse = 'COMPUTE_WH',
-    target_lag = '24 hour'
-) }}
+{{ config(materialized='table') }}
+
 
 with loc as (
 Select ID, 
