@@ -1,11 +1,31 @@
 version: 2
 
 models:
-  - name: int_f_location
+  - name: int_dt_location
     description: |
       A unified set of all airbnb
 
       **Granularité:** Une ligne par airbnb.
+    
+    columns:
+      - name: id
+        tests:
+          - not_null
+          - unique
+
+  - name: int_f_avis_s_1
+    description: |
+     Notation des airbnbn sur une journée
+    
+    columns:
+      - name: id
+        tests:
+          - not_null
+          - unique
+
+  - name: int_tab_location
+    description: |
+     Table physique des locations
     
     columns:
       - name: id
