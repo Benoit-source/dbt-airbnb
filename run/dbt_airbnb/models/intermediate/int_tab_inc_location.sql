@@ -8,8 +8,13 @@ create or replace transient table AIRBNB_BI.BI_SILVER.int_tab_inc_location
     
     as (
 
+with max_evt as (
+    
+    select null as max_dt_evt
+    
+),
 
-with loc as (
+loc as (
 Select ID, 
 	Case When PRICE <= 50 Then 1
          When PRICE <= 100 Then 2
@@ -37,11 +42,13 @@ Select ID,
 	REVIEW_SCORES_COMMUNICATION,
 	REVIEW_SCORES_LOCATION,
 	REVIEW_SCORES_RATING,
-	REVIEW_SCORES_VALUE
+	REVIEW_SCORES_VALUE,
+	DT_EVT
 From AIRBNB_BI.BI_BRONZE.stg_airbnb__listing
 Where FG_DER_VER = 1)
 
-select * from loc
+select *
+from loc
 
     )
 ;

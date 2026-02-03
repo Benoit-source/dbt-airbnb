@@ -1,7 +1,13 @@
 
 
+with max_evt as (
+    
+    select max(DT_EVT) as max_dt_evt
+    from AIRBNB_BI.BI_SILVER.int_tab_inc_location
+    
+),
 
-with loc as (
+loc as (
 Select ID, 
 	Case When PRICE <= 50 Then 1
          When PRICE <= 100 Then 2
@@ -29,10 +35,12 @@ Select ID,
 	REVIEW_SCORES_COMMUNICATION,
 	REVIEW_SCORES_LOCATION,
 	REVIEW_SCORES_RATING,
-	REVIEW_SCORES_VALUE
+	REVIEW_SCORES_VALUE,
+	DT_EVT
 From AIRBNB_BI.BI_BRONZE.stg_airbnb__listing
 Where FG_DER_VER = 1)
 
-select * from loc
+select *
+from loc
 
-  where DT_EVT > (select max(DT_EDT) from AIRBNB_BI.BI_SILVER.int_tab_inc_location)
+where DT_EVT > (select max_dt_evt from max_evt)
