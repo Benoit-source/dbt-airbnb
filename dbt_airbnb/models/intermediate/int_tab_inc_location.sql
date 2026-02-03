@@ -1,10 +1,19 @@
 {{ config(
     materialized='incremental',
-    unique_key='ID'
+    unique_key='ID',
+    incremental_strategy='merge'
 ) }}
 
+with max_evt as (
+    {% if is_incremental() %}
+    select max(DT_EVT) as max_dt_evt
+    from {{ this }}
+    {% else %}
+    select null as max_dt_evt
+    {% endif %}
+),
 
-with loc as (
+loc as (
 Select ID, 
 	Case When PRICE <= 50 Then 1
          When PRICE <= 100 Then 2
@@ -37,7 +46,8 @@ Select ID,
 From {{ ref('stg_airbnb__listing') }}
 Where FG_DER_VER = 1)
 
-select * from loc
+select *
+from loc
 {% if is_incremental() %}
-  where DT_EVT > (select max(DT_EVT) from {{ this }})
+where DT_EVT > (select max_dt_evt from max_evt)
 {% endif %}
