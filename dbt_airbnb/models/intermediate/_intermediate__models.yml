@@ -1,20 +1,12 @@
 version: 2
 
 models:
-  - name: int_f_location
+  - name: int_dt_location
     description: |
       A unified set of all airbnb
 
       **Granularité:** Une ligne par airbnb.
     
-    columns:
-      - name: id
-        tests:
-          - not_null
-          - unique
-
-  - name: int_dt_location
-    description: Test de table dynamic avec DBT et DMF
     columns:
       - name: id
         tests:
