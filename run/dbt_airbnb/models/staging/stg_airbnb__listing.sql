@@ -1,4 +1,11 @@
-with airbnb_bordeaux as (
+
+  create or replace   view AIRBNB_BI.BI_BRONZE.stg_airbnb__listing
+  
+  
+  
+  
+  as (
+    with airbnb_bordeaux as (
 
     select * exclude(LISTING_URL), 'Bordeaux' VILLE, Decode (Rank() Over (Partition By ID Order BY DT_EVT Desc), 1 , 1, 0) As FG_DER_VER
     from AIRBNB_BI.RAW_AIRBNB_BORDEAUX.DBO_LISTING
@@ -43,3 +50,5 @@ table_union as (
 )
 
 select * from table_union
+  );
+
