@@ -7,7 +7,7 @@ with airbnb_bordeaux as (
 
 airbnb_lyon as (
 
-    select * exclude(LIEN_URL), 'Lyon' VILLE, Decode (Rank() Over (Partition By ID Order BY DT_EVT Desc), 1 , 1, 0) As FG_DER_VER
+    select * exclude(LISTING_URL,LIEN_URL), 'Lyon' VILLE, Decode (Rank() Over (Partition By ID Order BY DT_EVT Desc), 1 , 1, 0) As FG_DER_VER
     from {{ source('AIRBNB_LYON', 'AIRBNB_LISTING') }}
 
 ),
@@ -37,7 +37,7 @@ table_union as (
     Select *
     From airbnb_paris
     Union all
-    Select *
+    Select 	*
     From airbnb_pays_basque
 
 )
