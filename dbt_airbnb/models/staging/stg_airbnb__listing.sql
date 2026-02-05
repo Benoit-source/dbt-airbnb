@@ -37,7 +37,7 @@ table_union as (
     Select *
     From airbnb_paris
     Union all
-    Select *
+    Select 	*
     From airbnb_pays_basque
 
 )
