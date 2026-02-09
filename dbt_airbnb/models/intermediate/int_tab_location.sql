@@ -8,7 +8,13 @@
             {'name': 'SNOWFLAKE.CORE.NULL_PERCENT', 'column': 'REVIEW_SCORES_ACCURACY'}
           ]
       ) }}",
-      "{{ set_dmf_schedule('INT_TAB_LOCATION', '1440 MINUTE') }}"
+     "{{ attach_dmfs(
+          'INT_TAB_LOCATION',
+          [
+            {'name': 'SNOWFLAKE.CORE.DUPLICATE_COUNT ', 'column': 'ID'}
+          ]
+      ) }}",
+      "{{ set_dmf_schedule('INT_TAB_LOCATION', '60 MINUTE') }}"
     ]
 ) }}
 
