@@ -1,4 +1,11 @@
-{% macro tag_from_yaml(this) %}
+{% macro ensure_tags_and_apply(this) %}
+
+  {# 1. Créer les tags si absents #}
+  {% for tag in var('tags_to_create') %}
+    {% do run_query("CREATE TAG IF NOT EXISTS " ~ this.database ~ '.' ~ this.schema ~ '.' ~ tag ~ "") %}
+  {% endfor %}
+
+  {# 2. Charger la config YAML #}
   {% set tags_yaml = fromyaml(var('table_tags')) %}
   {% set table_name = this.identifier %}
 
