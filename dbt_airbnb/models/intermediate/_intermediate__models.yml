@@ -6,9 +6,16 @@ models:
       A unified set of all airbnb
 
       **Granularité:** Une ligne par airbnb.
-    
     columns:
       - name: id
         tests:
           - not_null
           - unique
+
+  - name: int_tab_location
+    description: "Table physique des locations"
+    columns:
+      - name: id
+        description: "Identifiant unique"
+      - name: code_ville
+        description: "Ville de la location"

@@ -26,6 +26,19 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
+vars:
+  tags_to_create: ["BUSINESS_OWNER", "SENSITIVITY_LEVEL"]
+  table_tags: |
+    int_tab_location:
+      business_owner: "Equipe Data Marketplace"
+      sensitivity_level: "low"
+      columns:
+        ID:
+          business_owner: "Equipe Data Marketplace"
+          sensitivity_level: "medium"
+        CODE_VILLE:
+          business_owner: "Equipe Data Marketplace"
+          sensitivity_level: "low"
 
 models:
   dbt_airbnb:
@@ -41,3 +54,5 @@ models:
     +persist_docs:
       relation: true
       columns: true
+    +post-hook: "{{ ensure_tags_and_apply(this) }}"
+    
