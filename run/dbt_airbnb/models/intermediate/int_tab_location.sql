@@ -8,7 +8,6 @@ create or replace transient table AIRBNB_BI.BI_SILVER.int_tab_location
     
     as (
 
-
 with loc as (
 Select ID, 
 	Case When PRICE <= 50 Then 1

@@ -1,6 +1,5 @@
 
 
-
 with loc as (
 Select ID, 
 	Case When PRICE <= 50 Then 1
