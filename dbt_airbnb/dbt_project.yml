@@ -54,31 +54,32 @@ models:
     +persist_docs:
       relation: true
       columns: true
-    +pre-hook: >
-      INSERT INTO AIRBNB_BI.BI.MODEL_RUN_LOG
-      (
-        MODEL_NAME,
-        DATABASE_NAME,
-        SCHEMA_NAME,
-        MATERIALIZATION,
-        TARGET_NAME,
-        START_TIME,
-        STATUS,
-        INVOCATION_ID
-      )
-      VALUES (
-        '{{ this.name }}',
-        '{{ this.database }}',
-        '{{ this.schema }}',
-        '{{ config.get("materialized") }}',
-        '{{ target.name }}',
-        CURRENT_TIMESTAMP(),
-        'RUNNING',
-        '{{ invocation_id }}'
-      )
+    +pre-hook: 
+      - >
+        INSERT INTO MODEL_RUN_LOG
+        (
+          MODEL_NAME,
+          DATABASE_NAME,
+          SCHEMA_NAME,
+          MATERIALIZATION,
+          TARGET_NAME,
+          START_TIME,
+          STATUS,
+          INVOCATION_ID
+        )
+        VALUES (
+          '{{ this.name }}',
+          '{{ this.database }}',
+          '{{ this.schema }}',
+          '{{ config.get("materialized") }}',
+          '{{ target.name }}',
+          CURRENT_TIMESTAMP(),
+          'RUNNING',
+          '{{ invocation_id }}'
+        )
     +post-hook: 
       - >
-        UPDATE AIRBNB_BI.BI.MODEL_RUN_LOG
+        UPDATE MODEL_RUN_LOG
         SET
           END_TIME = CURRENT_TIMESTAMP(),
           DURATION_SEC = DATEDIFF(second, START_TIME, CURRENT_TIMESTAMP()),
