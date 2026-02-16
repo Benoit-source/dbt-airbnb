@@ -54,5 +54,37 @@ models:
     +persist_docs:
       relation: true
       columns: true
-    +post-hook: "{{ ensure_tags_and_apply(this) }}"
-    
+    +pre-hook: 
+      - >
+        INSERT INTO MODEL_RUN_LOG
+        (
+          MODEL_NAME,
+          DATABASE_NAME,
+          SCHEMA_NAME,
+          MATERIALIZATION,
+          TARGET_NAME,
+          START_TIME,
+          STATUS,
+          INVOCATION_ID
+        )
+        VALUES (
+          '{{ this.name }}',
+          '{{ this.database }}',
+          '{{ this.schema }}',
+          '{{ config.get("materialized") }}',
+          '{{ target.name }}',
+          CURRENT_TIMESTAMP(),
+          'RUNNING',
+          '{{ invocation_id }}'
+        )
+    +post-hook: 
+      - >
+        UPDATE MODEL_RUN_LOG
+        SET
+          END_TIME = CURRENT_TIMESTAMP(),
+          DURATION_SEC = DATEDIFF(second, START_TIME, CURRENT_TIMESTAMP()),
+          STATUS = 'SUCCESS'
+        WHERE MODEL_NAME = '{{ this.name }}'
+          AND INVOCATION_ID = '{{ invocation_id }}'
+
+      - "{{ ensure_tags_and_apply(this) }}"
