@@ -7,7 +7,7 @@
 {% do run_query(sql) %}
 
 {% set sql %}
-  CREATE TABLE IF NOT EXISTS AIRBNB_BI_FEATURE.BI.MODEL_RUN_LOG (
+  CREATE TABLE IF NOT EXISTS {{ relation }}.MODEL_RUN_LOG (
     MODEL_NAME        STRING,
     DATABASE_NAME     STRING,
     SCHEMA_NAME       STRING,
