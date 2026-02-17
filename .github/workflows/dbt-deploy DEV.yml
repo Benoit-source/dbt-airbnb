@@ -46,6 +46,8 @@ jobs:
       - name: Install dbt
         run: |
           pip install dbt-snowflake
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
       - name: Check previous manifest
         id: manifest-check

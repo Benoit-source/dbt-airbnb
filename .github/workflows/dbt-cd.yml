@@ -28,6 +28,8 @@ jobs:
       - name: Install dbt
         run: |
           pip install dbt-snowflake
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
       - name: Run dbt debug
         run: dbt debug --profiles-dir ./dbt_airbnb  --project-dir ./dbt_airbnb --target prod
