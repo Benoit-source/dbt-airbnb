@@ -17,6 +17,14 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Setup Snowflake private key
+        run: |
+          mkdir -p /home/runner/.secrets
+          echo "$SNOWFLAKE_PRIVATE_KEY_B64" | base64 --decode > /home/runner/.secrets/snowflake_key.p8
+          chmod 600 /home/runner/.secrets/snowflake_key.p8
+        env:
+          SNOWFLAKE_PRIVATE_KEY_B64: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_B64 }}
+
       - name: Install dbt
         run: |
           pip install dbt-snowflake
