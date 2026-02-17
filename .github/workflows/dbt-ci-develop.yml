@@ -16,6 +16,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Setup Snowflake private key
+        run: |
+          echo "$SNOWFLAKE_PRIVATE_KEY_B64" | base64 --decode > /home/runner/.secrets/snowflake_key.p8
+          chmod 600 /home/runner/.secrets/snowflake_key.p8
+
       - name: Install Python
         uses: actions/setup-python@v5
         with:
@@ -49,6 +54,8 @@ jobs:
           EOF
 
       - name: Install dependencies
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
         run: dbt deps --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --target ci
 
       - name: Create temporary schema (via dbt macro)
