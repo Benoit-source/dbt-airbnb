@@ -71,6 +71,8 @@ jobs:
 
       - name: Generate dbt docs
         run: dbt docs generate --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
       - name: Deploy docs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
