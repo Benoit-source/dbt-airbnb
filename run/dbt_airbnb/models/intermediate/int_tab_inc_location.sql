@@ -4,8 +4,11 @@
     
         
             
-	    
-	    
+                
+                
+            
+                
+                
             
         
     
@@ -14,7 +17,11 @@
 
     merge into AIRBNB_BI.BI_SILVER.int_tab_inc_location as DBT_INTERNAL_DEST
         using AIRBNB_BI.BI_SILVER.int_tab_inc_location__dbt_tmp as DBT_INTERNAL_SOURCE
-        on ((DBT_INTERNAL_SOURCE.ID = DBT_INTERNAL_DEST.ID))
+        on (
+                    DBT_INTERNAL_SOURCE.ID = DBT_INTERNAL_DEST.ID
+                ) and (
+                    DBT_INTERNAL_SOURCE.CODE_PRICE = DBT_INTERNAL_DEST.CODE_PRICE
+                )
 
     
     when matched then update set
