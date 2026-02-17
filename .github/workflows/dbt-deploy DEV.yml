@@ -35,6 +35,15 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Setup Snowflake private key
+        run: |
+          mkdir -p /home/runner/.secrets
+          echo "$SNOWFLAKE_PRIVATE_KEY_B64" | base64 --decode > /home/runner/.secrets/snowflake_key.p8
+          chmod 600 /home/runner/.secrets/snowflake_key.p8
+        env:
+              SNOWFLAKE_PRIVATE_KEY_B64: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_B64 }}
+              SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
+
       - name: Install dbt
         run: |
           pip install dbt-snowflake
@@ -51,10 +60,14 @@ jobs:
       - name: Build only changed models - Deploy to DEV
         if: steps.manifest-check.outputs.exists == 'true' && github.ref == 'refs/heads/develop'
         run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target dev --select state:modified+ --state ./prev_manifest
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
       - name: Build full project (no manifest available) - Deploy to DEV
         if: steps.manifest-check.outputs.exists == 'false' && github.ref == 'refs/heads/develop'
         run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target dev --full-refresh
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
       - name: Save new manifest
         run: |
