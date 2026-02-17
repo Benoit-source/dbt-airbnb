@@ -24,6 +24,11 @@ jobs:
         env:
             SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
+      - name: Debug key
+        run: |
+          ls -l $HOME/.secrets
+          head -n 2 $HOME/.secrets/snowflake_key.p8
+
       - name: Install Python
         uses: actions/setup-python@v5
         with:
