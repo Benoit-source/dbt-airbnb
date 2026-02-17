@@ -34,7 +34,11 @@ jobs:
 
       - name: Run dbt debug
         run: dbt debug --profiles-dir ./dbt_airbnb  --project-dir ./dbt_airbnb --target prod
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
       - name: Run dbt tests
         run: dbt test --profiles-dir ./dbt_airbnb  --project-dir ./dbt_airbnb --target prod || true
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 

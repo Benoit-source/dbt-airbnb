@@ -47,8 +47,6 @@ jobs:
       - name: Install dbt
         run: |
           pip install dbt-snowflake
-        env:
-          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
       - name: Check previous manifest
         id: manifest-check
@@ -62,10 +60,14 @@ jobs:
       - name: Build only changed models - Deploy to PROD
         if: steps.manifest-check.outputs.exists == 'true' && github.ref == 'refs/heads/main'
         run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod --select state:modified+ --state ./prev_manifest
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
       - name: Build full project (no manifest available) - Deploy to PROD
         if: steps.manifest-check.outputs.exists == 'false' && github.ref == 'refs/heads/main'
         run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod --full-refresh
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
       - name: Generate dbt docs
         run: dbt docs generate --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod

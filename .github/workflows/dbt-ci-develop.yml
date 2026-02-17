@@ -63,16 +63,24 @@ jobs:
           EOF
 
       - name: Install dependencies
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
         run: dbt deps --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --target ci
 
       - name: Create temporary schema (via dbt macro)
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
         run: |
           dbt run-operation create_schema --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --target ci --args "{\"relation\": \"${{ steps.schema-temp.outputs.schema_name }}\"}"
 
       - name: Run dbt build on temp schema
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
         run: dbt build --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --target ci --full-refresh
 
       - name: Drop temporary schema (via dbt macro)
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
         if: always()
         run: |
             dbt run-operation drop_schema_like --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --args "{\"prefix\": \"${{ steps.schema-temp.outputs.schema_name }}\"}"
