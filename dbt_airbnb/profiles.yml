@@ -3,7 +3,9 @@ dbt_airbnb:
     feature:
       account: ttjpinf-jib75082
       database: AIRBNB_BI_FEATURE
-      private_key_path:  C:\Users\BenoitOTTAVI\Documents\snowflake_keys\rsa_key.pem
+      # Authentification sans mot de passe
+      # Chemin vers la clé privée générée
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
       role: accountadmin
       schema: BI
       threads: 4
@@ -13,7 +15,9 @@ dbt_airbnb:
     dev:
       account: ttjpinf-jib75082
       database: AIRBNB_BI_DEV
-      private_key_path:  C:\Users\BenoitOTTAVI\Documents\snowflake_keys\rsa_key.pem
+      # Authentification sans mot de passe
+      # Chemin vers la clé privée générée
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
       role: accountadmin
       schema: BI
       threads: 4
@@ -23,7 +27,9 @@ dbt_airbnb:
     prod:
       account: ttjpinf-jib75082
       database: AIRBNB_BI
-      private_key_path:  C:\Users\BenoitOTTAVI\Documents\snowflake_keys\rsa_key.pem
+      # Authentification sans mot de passe
+      # Chemin vers la clé privée générée
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
       role: accountadmin
       schema: BI
       threads: 4
