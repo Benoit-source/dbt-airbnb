@@ -21,6 +21,8 @@ jobs:
           mkdir -p /home/runner/.secrets
           echo "$SNOWFLAKE_PRIVATE_KEY_B64" | base64 --decode > /home/runner/.secrets/snowflake_key.p8
           chmod 600 /home/runner/.secrets/snowflake_key.p8
+        env:
+            SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
       - name: Install Python
         uses: actions/setup-python@v5
@@ -47,7 +49,7 @@ jobs:
                   type: snowflake
                   account: "${{ secrets.SNOWFLAKE_ACCOUNT }}"
                   user: "${{ secrets.SNOWFLAKE_USER }}"
-                  password: "${{ secrets.SNOWFLAKE_PASSWORD }}"
+                  private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
                   role: "${{ secrets.SNOWFLAKE_ROLE }}"
                   warehouse: "${{ secrets.SNOWFLAKE_WAREHOUSE }}"
                   database: "${{ secrets.SNOWFLAKE_DATABASE_DEV }}"
