@@ -11,7 +11,7 @@
             {'name': 'SNOWFLAKE.CORE.DUPLICATE_COUNT ', 'column': 'ID'}
           ]
       ) }}",
-      "{{ set_dmf_schedule('INT_TAB_LOCATION', '60 MINUTE') }}"
+      "{{ set_dmf_schedule( '60 MINUTE') }}"
     ]
 ) }}
 
