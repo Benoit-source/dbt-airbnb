@@ -29,10 +29,10 @@
       Ville de la location
 {% enddocs %}
 
-{% docs int_int_f_review %}
+{% docs int_f_review %}
       Avis sur les airbnb
 {% enddocs %}
 
-{% docs int_int_f_review_id %}
+{% docs int_f_review_id %}
       Identifiant de l'avis
 {% enddocs %}
