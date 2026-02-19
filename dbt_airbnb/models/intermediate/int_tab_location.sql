@@ -1,6 +1,5 @@
 {{ config(
     materialized = 'table',
-    static_analysis = 'unsafe',
     post_hook = [
       "{{ attach_dmfs(
           'INT_TAB_LOCATION',
