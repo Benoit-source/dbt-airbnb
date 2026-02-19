@@ -32,6 +32,11 @@ jobs:
         env:
           SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
 
+      - name: Install dependencies
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
+        run: dbt deps --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --target prod
+
       - name: Run dbt debug
         run: dbt debug --profiles-dir ./dbt_airbnb  --project-dir ./dbt_airbnb --target prod
         env:

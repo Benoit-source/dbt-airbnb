@@ -57,6 +57,11 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Install dependencies
+        env:
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/.secrets/snowflake_key.p8
+        run: dbt deps --project-dir ./dbt_airbnb --profiles-dir ./dbt_airbnb --target PROD
+
       - name: Build only changed models - Deploy to PROD
         if: steps.manifest-check.outputs.exists == 'true' && github.ref == 'refs/heads/main'
         run: dbt build --profiles-dir ./dbt_airbnb --project-dir ./dbt_airbnb --target prod --select state:modified+ --state ./prev_manifest
