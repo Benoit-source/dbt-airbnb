@@ -13,7 +13,7 @@
 
 
 select id
-from AIRBNB_BI.BI_BRONZE.stg_airbnb__listing
+from AIRBNB_BI.BI_SILVER.int_f_review
 where id is null
 
 

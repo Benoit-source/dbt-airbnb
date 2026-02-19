@@ -7,7 +7,7 @@
   
     "LISTING_ID" COMMENT $$$$, 
   
-    "ID" COMMENT $$$$, 
+    "ID" COMMENT $$Identifiant de l'avis$$, 
   
     "DATE" COMMENT $$$$, 
   
