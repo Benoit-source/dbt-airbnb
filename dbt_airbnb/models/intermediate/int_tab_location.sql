@@ -1,20 +1,17 @@
 {{ config(
     materialized = 'table',
-    static_analysis = 'unsafe',
     post_hook = [
       "{{ attach_dmfs(
-          'INT_TAB_LOCATION',
           [
             {'name': 'SNOWFLAKE.CORE.NULL_PERCENT', 'column': 'REVIEW_SCORES_ACCURACY'}
           ]
       ) }}",
      "{{ attach_dmfs(
-          'INT_TAB_LOCATION',
           [
             {'name': 'SNOWFLAKE.CORE.DUPLICATE_COUNT ', 'column': 'ID'}
           ]
       ) }}",
-      "{{ set_dmf_schedule('INT_TAB_LOCATION', '60 MINUTE') }}"
+      "{{ set_dmf_schedule( '60 MINUTE') }}"
     ]
 ) }}
 
