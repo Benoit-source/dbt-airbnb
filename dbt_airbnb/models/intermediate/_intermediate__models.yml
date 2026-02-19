@@ -38,12 +38,12 @@ models:
         tests:
           - not_null
 
-  - name: INT_TAB_INC_LOCATION
+  - name: int_tab_inc_location
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - id
-            - CODE_PRICE
+            - code_price
     description: '{{ doc("int_tab_inc_location") }}'
     constraints:
       - type: primary_key
