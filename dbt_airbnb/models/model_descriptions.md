@@ -18,7 +18,7 @@
 {% enddocs %}
 
 {% docs int_tab_location %}
-      Table physique des locations
+      Table d'historisation des locations
 {% enddocs %}
 
 {% docs int_tab_location_id %}

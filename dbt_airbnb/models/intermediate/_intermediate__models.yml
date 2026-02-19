@@ -13,7 +13,7 @@ models:
     description: '{{ doc("int_tab_location") }}'
     constraints:
       - type: primary_key
-        columns: id
+        columns: [id]
     columns:
       - name: id
         description: '{{ doc("int_tab_location_id") }}'
@@ -27,7 +27,7 @@ models:
     description: '{{ doc("int_f_review") }}'
     constraints:
       - type: primary_key
-        columns: id
+        columns: [id]
       - type: foreign_key
         columns: [listing_id]
         to: ref('int_tab_location')
