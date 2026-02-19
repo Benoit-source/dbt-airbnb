@@ -41,9 +41,10 @@ models:
   - name: int_tab_inc_location
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - id
-            - code_price
+          arguments:
+            combination_of_columns:
+              - id
+              - code_price
     description: '{{ doc("int_tab_inc_location") }}'
     constraints:
       - type: primary_key
