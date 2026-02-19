@@ -36,3 +36,8 @@
 {% docs int_f_review_id %}
       Identifiant de l'avis
 {% enddocs %}
+
+{% docs int_tab_inc_location %}
+      Table incrémentale sur les locations
+{% enddocs %}
+

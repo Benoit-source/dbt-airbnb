@@ -37,4 +37,19 @@ models:
         description: '{{ doc("int_f_review_id") }}'
         tests:
           - not_null
+
+  - name: INT_TAB_INC_LOCATION
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - id
+            - CODE_PRICE
+    description: '{{ doc("int_tab_inc_location") }}'
+    constraints:
+      - type: primary_key
+        columns: ['ID', 'CODE_PRICE']
+    columns:
+      - name: id
+        tests:
+          - not_null
           - unique
