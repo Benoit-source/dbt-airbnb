@@ -2,10 +2,7 @@ version: 2
 
 models:
   - name: int_dt_location
-    description: |
-      A unified set of all airbnb
-
-      **Granularité:** Une ligne par airbnb.
+    description: '{{ doc("int_dt_location") }}'
     columns:
       - name: id
         tests:
@@ -13,9 +10,47 @@ models:
           - unique
 
   - name: int_tab_location
-    description: "Table physique des locations"
+    description: '{{ doc("int_tab_location") }}'
+    constraints:
+      - type: primary_key
+        columns: id
     columns:
       - name: id
-        description: "Identifiant unique"
+        description: '{{ doc("int_tab_location_id") }}'
+        tests:
+          - not_null
+          - unique
       - name: code_ville
-        description: "Ville de la location"
+        description: '{{ doc("int_tab_location_code_ville") }}'
+
+  - name: int_f_review
+    description: '{{ doc("int_f_review") }}'
+    constraints:
+      - type: primary_key
+        columns: id
+      - type: foreign_key
+        columns: [listing_id]
+        to: ref('int_tab_location')
+        to_columns: [id]
+    columns:
+      - name: id
+        description: '{{ doc("int_f_review_id") }}'
+        tests:
+          - not_null
+
+  - name: int_tab_inc_location
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - id
+              - code_price
+    description: '{{ doc("int_tab_inc_location") }}'
+    constraints:
+      - type: primary_key
+        columns: ['ID', 'CODE_PRICE']
+    columns:
+      - name: id
+        tests:
+          - not_null
+          - unique

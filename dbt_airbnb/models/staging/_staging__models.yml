@@ -2,17 +2,17 @@ version: 2
 
 models:
   - name: stg_airbnb__listing
-    description: '{{ doc("model_listing") }}'
+    description: '{{ doc("stg_airbnb__listing") }}'
 
     columns:
       - name: ville
-        description: La ville dans laquelle se situe le **Airbnb**.
+        description: '{{ doc("stg_airbnb__listing_id") }}'
       - name: id
         tests:
           - not_null
 
   - name: stg_airbnb__review
-    description: ...
+    description: '{{ doc("stg_airbnb__review") }}'
 
     columns:
     - name: listing_id
