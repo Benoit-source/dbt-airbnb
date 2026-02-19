@@ -2,13 +2,11 @@
     materialized = 'table',
     post_hook = [
       "{{ attach_dmfs(
-          'INT_TAB_LOCATION',
           [
             {'name': 'SNOWFLAKE.CORE.NULL_PERCENT', 'column': 'REVIEW_SCORES_ACCURACY'}
           ]
       ) }}",
      "{{ attach_dmfs(
-          'INT_TAB_LOCATION',
           [
             {'name': 'SNOWFLAKE.CORE.DUPLICATE_COUNT ', 'column': 'ID'}
           ]
