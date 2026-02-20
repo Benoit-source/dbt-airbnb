@@ -11,7 +11,7 @@ dbt_airbnb:
       threads: 4
       type: snowflake
       user: USER_DBT_DEV
-      warehouse: COMPUTE_WH
+      warehouse: WH_TRANSFORM_DEV
     dev:
       account: ttjpinf-jib75082
       database: AIRBNB_BI_REC
@@ -23,7 +23,7 @@ dbt_airbnb:
       threads: 4
       type: snowflake
       user: USER_DBT_REC
-      warehouse: COMPUTE_WH
+      warehouse: WH_TRANSFORM_REC
     prod:
       account: ttjpinf-jib75082
       database: AIRBNB_BI_PROD
@@ -35,5 +35,5 @@ dbt_airbnb:
       threads: 4
       type: snowflake
       user: USER_DBT_PROD
-      warehouse: COMPUTE_WH
+      warehouse: WH_TRANSFORM_PROD
   target: feature
