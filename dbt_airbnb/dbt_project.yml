@@ -27,6 +27,10 @@ clean-targets:         # directories to be removed by `dbt clean`
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 vars:
+  warehouse_by_env:
+    feature: WH_TRANSFORM_DEV
+    dev: WH_TRANSFORM_REC
+    prod: WH_TRANSFORM_PROD
   tags_to_create: ["BUSINESS_OWNER", "SENSITIVITY_LEVEL"]
   table_tags: |
     int_tab_location:
