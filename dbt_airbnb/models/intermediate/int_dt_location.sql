@@ -1,6 +1,6 @@
 {{ config(
     materialized = 'dynamic_table',
-    snowflake_warehouse = 'COMPUTE_WH',
+    snowflake_warehouse = var('warehouse_by_env')[target.name],
     target_lag = '24 hour'
 ) }}
 
