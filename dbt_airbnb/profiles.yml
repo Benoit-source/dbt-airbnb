@@ -2,38 +2,38 @@ dbt_airbnb:
   outputs:
     feature:
       account: ttjpinf-jib75082
-      database: AIRBNB_BI_FEATURE
-      # Authentification sans mot de passe
-      # Chemin vers la clé privée générée
-      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
-      role: accountadmin
-      schema: BI
-      threads: 4
-      type: snowflake
-      user: benoit
-      warehouse: COMPUTE_WH
-    dev:
-      account: ttjpinf-jib75082
       database: AIRBNB_BI_DEV
       # Authentification sans mot de passe
       # Chemin vers la clé privée générée
       private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
-      role: accountadmin
+      role: DBT_DEV
       schema: BI
       threads: 4
       type: snowflake
-      user: benoit
-      warehouse: COMPUTE_WH
-    prod:
+      user: USER_DBT_DEV
+      warehouse: WH_TRANSFORM_DEV
+    dev:
       account: ttjpinf-jib75082
-      database: AIRBNB_BI
+      database: AIRBNB_BI_REC
       # Authentification sans mot de passe
       # Chemin vers la clé privée générée
       private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
-      role: accountadmin
+      role: DBT_REC
       schema: BI
       threads: 4
       type: snowflake
-      user: benoit
-      warehouse: COMPUTE_WH
+      user: USER_DBT_REC
+      warehouse: WH_TRANSFORM_REC
+    prod:
+      account: ttjpinf-jib75082
+      database: AIRBNB_BI_PROD
+      # Authentification sans mot de passe
+      # Chemin vers la clé privée générée
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
+      role: DBT_PROD
+      schema: BI
+      threads: 4
+      type: snowflake
+      user: USER_DBT_PROD
+      warehouse: WH_TRANSFORM_PROD
   target: feature

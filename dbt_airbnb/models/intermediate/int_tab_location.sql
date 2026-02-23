@@ -8,7 +8,7 @@
       ) }}",
      "{{ attach_dmfs(
           [
-            {'name': 'SNOWFLAKE.CORE.DUPLICATE_COUNT ', 'column': 'ID'}
+            {'name': 'SNOWFLAKE.CORE.DUPLICATE_COUNT', 'column': 'ID'}
           ]
       ) }}",
       "{{ set_dmf_schedule( '60 MINUTE') }}"
