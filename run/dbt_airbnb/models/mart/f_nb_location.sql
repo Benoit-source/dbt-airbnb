@@ -1,4 +1,27 @@
-with listing as (
+
+  create or replace   view AIRBNB_BI_PROD.BI_GOLD.f_nb_location
+  
+    
+    
+(
+  
+    "TR_PRICE" COMMENT $$$$, 
+  
+    "VILLE" COMMENT $$$$, 
+  
+    "ROOM_TYPE" COMMENT $$$$, 
+  
+    "NB_AIRBNB" COMMENT $$$$, 
+  
+    "NB_REVIEW" COMMENT $$$$
+  
+)
+
+  
+  
+  
+  as (
+    with listing as (
 
     select ID, NUMBER_OF_REVIEWS, CODE_PRICE, CODE_VILLE, CODE_ROOM_TYPE 
     from AIRBNB_BI_PROD.BI_SILVER.int_f_location
@@ -40,3 +63,5 @@ agg as (
 
 
 select * from agg
+  );
+

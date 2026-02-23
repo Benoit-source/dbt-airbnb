@@ -1,4 +1,21 @@
-with listing as (
+
+  create or replace   view AIRBNB_BI_PROD.BI_SILVER.int_d_type_room
+  
+    
+    
+(
+  
+    "CODE_ROOM_TYPE" COMMENT $$$$, 
+  
+    "ROOM_TYPE" COMMENT $$$$
+  
+)
+
+  
+  
+  
+  as (
+    with listing as (
 
     select Distinct ROOM_TYPE from AIRBNB_BI_PROD.BI_BRONZE.stg_airbnb__listing
 
@@ -18,3 +35,5 @@ room as (
 )
 
 select * from room
+  );
+

@@ -1,4 +1,35 @@
-with airbnb_bordeaux as (
+
+  create or replace   view AIRBNB_BI_PROD.BI_BRONZE.stg_airbnb__review
+  
+    
+    
+(
+  
+    "DT_EVT" COMMENT $$$$, 
+  
+    "LISTING_ID" COMMENT $$$$, 
+  
+    "ID" COMMENT $$$$, 
+  
+    "DATE" COMMENT $$$$, 
+  
+    "REVIEWER_ID" COMMENT $$$$, 
+  
+    "REVIEWER_NAME" COMMENT $$$$, 
+  
+    "COMMENTS" COMMENT $$$$, 
+  
+    "'BORDEAUX'" COMMENT $$$$, 
+  
+    "FG_DER_VER" COMMENT $$$$
+  
+)
+
+  
+  
+  
+  as (
+    with airbnb_bordeaux as (
 
     select *, 'Bordeaux', Decode (Rank() Over (Partition By ID, LISTING_ID Order BY DT_EVT Desc), 1 , 1, 0) As FG_DER_VER
     from AIRBNB_BI_PROD.RAW_AIRBNB_BORDEAUX.DBO_REVIEW
@@ -43,3 +74,5 @@ table_union as (
 )
 
 select * from table_union
+  );
+

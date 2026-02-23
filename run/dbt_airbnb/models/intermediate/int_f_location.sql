@@ -1,4 +1,45 @@
-with listing as (
+
+  create or replace   view AIRBNB_BI_PROD.BI_SILVER.int_f_location
+  
+    
+    
+(
+  
+    "ID" COMMENT $$$$, 
+  
+    "CODE_PRICE" COMMENT $$$$, 
+  
+    "CODE_ROOM_TYPE" COMMENT $$$$, 
+  
+    "CODE_VILLE" COMMENT $$$$, 
+  
+    "LATITUDE" COMMENT $$$$, 
+  
+    "LONGITUDE" COMMENT $$$$, 
+  
+    "NUMBER_OF_REVIEWS" COMMENT $$$$, 
+  
+    "REVIEW_SCORES_ACCURACY" COMMENT $$$$, 
+  
+    "REVIEW_SCORES_CHECKIN" COMMENT $$$$, 
+  
+    "REVIEW_SCORES_CLEANLINESS" COMMENT $$$$, 
+  
+    "REVIEW_SCORES_COMMUNICATION" COMMENT $$$$, 
+  
+    "REVIEW_SCORES_LOCATION" COMMENT $$$$, 
+  
+    "REVIEW_SCORES_RATING" COMMENT $$$$, 
+  
+    "REVIEW_SCORES_VALUE" COMMENT $$$$
+  
+)
+
+  
+  
+  
+  as (
+    with listing as (
 
     select ID, 
 		PRICE,
@@ -54,3 +95,5 @@ liste as (
 )
 
 select * from liste
+  );
+

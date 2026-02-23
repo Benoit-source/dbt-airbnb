@@ -1,5 +1,5 @@
 
-  create or replace   view AIRBNB_BI.BI_SILVER.int_f_review
+  create or replace   view AIRBNB_BI_PROD.BI_SILVER.int_f_review
   
     
     
@@ -25,7 +25,7 @@
 	ID,
 	DATE,
 	COMMENTS 
-	from AIRBNB_BI.BI_BRONZE.stg_airbnb__review
+	from AIRBNB_BI_PROD.BI_BRONZE.stg_airbnb__review
 	where FG_DER_VER = 1
 
 )

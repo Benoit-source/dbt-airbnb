@@ -29,7 +29,7 @@ Select ID,
 	REVIEW_SCORES_LOCATION,
 	REVIEW_SCORES_RATING,
 	REVIEW_SCORES_VALUE
-From AIRBNB_BI.BI_BRONZE.stg_airbnb__listing
+From AIRBNB_BI_PROD.BI_BRONZE.stg_airbnb__listing
 Where FG_DER_VER = 1)
 
 select * from loc

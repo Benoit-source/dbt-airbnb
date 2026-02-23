@@ -1,28 +1,28 @@
 with airbnb_bordeaux as (
 
     select * exclude(LISTING_URL), 'Bordeaux' VILLE, Decode (Rank() Over (Partition By ID Order BY DT_EVT Desc), 1 , 1, 0) As FG_DER_VER
-    from AIRBNB_BI.RAW_AIRBNB_BORDEAUX.DBO_LISTING
+    from AIRBNB_BI_PROD.RAW_AIRBNB_BORDEAUX.DBO_LISTING
 
 ),
 
 airbnb_lyon as (
 
     select * exclude(LISTING_URL,LIEN_URL), 'Lyon' VILLE, Decode (Rank() Over (Partition By ID Order BY DT_EVT Desc), 1 , 1, 0) As FG_DER_VER
-    from AIRBNB_BI.RAW_AIRBNB_LYON.AIRBNB_LISTING
+    from AIRBNB_BI_PROD.RAW_AIRBNB_LYON.AIRBNB_LISTING
 
 ),
 
 airbnb_paris as (
 
     select *, 'Paris' VILLE, Decode (Rank() Over (Partition By ID Order BY DT_EVT Desc), 1 , 1, 0) As FG_DER_VER
-    from AIRBNB_BI.RAW_AIRBNB_PARIS.AIRBNB_LISTING
+    from AIRBNB_BI_PROD.RAW_AIRBNB_PARIS.AIRBNB_LISTING
 
 ),
 
 airbnb_pays_basque as (
 
     select * exclude(LISTING_URL), 'Pays Basque' VILLE, Decode (Rank() Over (Partition By ID Order BY DT_EVT Desc), 1 , 1, 0) As FG_DER_VER
-    from AIRBNB_BI.RAW_AIRBNB_PAYS_BASQUE.AIRBNB_LISTING
+    from AIRBNB_BI_PROD.RAW_AIRBNB_PAYS_BASQUE.AIRBNB_LISTING
 
 ),
 

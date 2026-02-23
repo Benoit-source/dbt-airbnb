@@ -3,7 +3,7 @@
 with max_evt as (
     
     select max(DT_EVT) as max_dt_evt
-    from AIRBNB_BI.BI_SILVER.int_tab_inc_location
+    from AIRBNB_BI_PROD.BI_SILVER.int_tab_inc_location
     
 ),
 
@@ -37,7 +37,7 @@ Select ID,
 	REVIEW_SCORES_RATING,
 	REVIEW_SCORES_VALUE,
 	DT_EVT
-From AIRBNB_BI.BI_BRONZE.stg_airbnb__listing
+From AIRBNB_BI_PROD.BI_BRONZE.stg_airbnb__listing
 Where FG_DER_VER = 1)
 
 select *
