@@ -76,6 +76,8 @@ jobs:
 
       - name: Save new manifest
         run: |
+          git reset --hard
+          git clean -fd
           git fetch origin ci-artifacts || true
           git checkout -B ci-artifacts origin/ci-artifacts || git checkout -b ci-artifacts
 

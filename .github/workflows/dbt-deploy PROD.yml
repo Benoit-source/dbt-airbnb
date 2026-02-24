@@ -88,6 +88,8 @@ jobs:
 
       - name: Save new manifest
         run: |
+          git reset --hard
+          git clean -fd
           git fetch origin cd-artifacts || true
           git checkout -B cd-artifacts origin/cd-artifacts || git checkout -b cd-artifacts
 
